@@ -2,16 +2,14 @@ import os
 import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
-import os
 from fastapi.middleware.cors import CORSMiddleware
 
-# Initialize FastAPI
 app = FastAPI()
 
-# CORS Setup (Allows external API calls)
+# CORS Setup
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Adjust to limit access to specific domains
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -43,8 +41,8 @@ def summarize_context(request: InquiryRequest):
 def read_root():
     return {"message": "Hello, Q'rea!"}
 
-# Main Execution Block (Ensures Railway Port Handling)
+# Ensure correct PORT and HOST
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8000))  # Railway assigns a port dynamically
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    port = int(os.getenv("PORT", 8000))  
+    host = os.getenv("HOST", "0.0.0.0")  # Add this line
+    uvicorn.run(app, host=host, port=port)
